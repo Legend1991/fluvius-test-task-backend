@@ -17,6 +17,11 @@ class Server {
 
   _init () {
     this._server.use(helmet())
+    this._server.use((req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*')
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+      next()
+    })
     this._server.use(morgan('tiny'))
     this._server.disable('x-powered-by')
     this._server.use(bodyParser.urlencoded({extended: true}))
