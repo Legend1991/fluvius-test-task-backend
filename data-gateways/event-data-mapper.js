@@ -46,6 +46,7 @@ class EventDataMapper {
       .find()
       .skip(offset)
       .limit(limit)
+      .sort({date: 1})
 
     if (from || to) {
       let filter = {}
