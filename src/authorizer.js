@@ -13,8 +13,6 @@ class Authorizer {
     if (!user || !(await user.verifyToken(token))) {
       throw new InvalidTokenError()
     }
-
-    return user
   }
 }
 

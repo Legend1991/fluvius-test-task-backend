@@ -9,10 +9,13 @@ class Validator {
     arg = this._toString(arg)
 
     return validator.isEmail(arg)
+
+    // let emailRegex = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/
+    // return emailRegex.test(arg)
   }
 
   isEmpty (arg) {
-    if (!arg) {
+    if (arg === null || arg === undefined) {
       return true
     }
 
@@ -47,7 +50,7 @@ class Validator {
     return arg >= 0
   }
 
-  isUint (arg) {
+  isUInt (arg) {
     if (!this.isUnsigned(arg)) {
       return false
     }

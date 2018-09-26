@@ -1,7 +1,7 @@
 const {User} = require('../entities')
 const ObjectID = require('mongodb').ObjectID
 
-class UserDataMapper {
+class UserMongoStorage {
   constructor ({db, encryptor}) {
     this._encryptor = encryptor
     this._db = db
@@ -26,7 +26,7 @@ class UserDataMapper {
   }
 
   async saveUser (user) {
-    await this._db.collection('users').updateOne({
+    let res = await this._db.collection('users').updateOne({
       _id: (user.id && ObjectID.createFromHexString(user.id)) || new ObjectID()
     }, {
       $set: {
@@ -37,7 +37,11 @@ class UserDataMapper {
     }, {
       upsert: true
     })
+
+    if (res.result.upserted) {
+      return res.result.upserted[0]._id
+    }
   }
 }
 
-module.exports = UserDataMapper
+module.exports = UserMongoStorage

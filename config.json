@@ -3,6 +3,78 @@
     "url": "mongodb://127.0.0.1:27017",
     "name": "fluvius"
   },
-  "port": 3000,
-  "secret": "SflKxwRJSMefds183jKKF2QT4fwpMeJf36POk6yJVadQssw5c"
+  "secret": "SflKxwRJSMefds183jKKF2QT4fwpMeJf36POk6yJVadQssw5c",
+  "server": {
+    "port": 3000,
+    "routerScheme": [
+      {
+        "type": "post",
+        "path": "/api/login",
+        "target": "userAuthorizer",
+        "method": "login",
+        "arg": {
+          "email": "body",
+          "password": "body"
+        }
+      },
+      {
+        "type": "post",
+        "path": "/api/events",
+        "target": "eventCreator",
+        "method": "create",
+        "arg": {
+          "token": {
+            "from": "headers",
+            "property": "authorization"
+          },
+          "name": "body",
+          "date": "body"
+        }
+      },
+      {
+        "type": "get",
+        "path": "/api/events",
+        "target": "eventsProvider",
+        "method": "fetch",
+        "arg": {
+          "token": {
+            "from": "headers",
+            "property": "authorization"
+          },
+          "offset": "query",
+          "limit": "query",
+          "from": "query",
+          "to": "query"
+        }
+      },
+      {
+        "type": "put",
+        "path": "/api/events/:id",
+        "target": "eventUpdater",
+        "method": "update",
+        "arg": {
+          "token": {
+            "from": "headers",
+            "property": "authorization"
+          },
+          "name": "body",
+          "date": "body",
+          "id": "params"
+        }
+      },
+      {
+        "type": "delete",
+        "path": "/api/events/:id",
+        "target": "eventRemover",
+        "method": "remove",
+        "arg": {
+          "token": {
+            "from": "headers",
+            "property": "authorization"
+          },
+          "id": "params"
+        }
+      }
+    ]
+  }
 }

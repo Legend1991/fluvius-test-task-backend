@@ -27,7 +27,7 @@ class Server {
     this._server.use(bodyParser.urlencoded({extended: true}))
     this._server.use(bodyParser.json({limit: '100mb'}))
     this._server.use(compression({threshold: 0}))
-    this._server.use('/api', this._router.middleware)
+    this._server.use('/', this._router)
   }
 
   async run () {

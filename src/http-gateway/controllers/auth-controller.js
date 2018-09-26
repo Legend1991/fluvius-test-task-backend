@@ -3,15 +3,15 @@
 const Controller = require('./controller')
 
 class AuthController extends Controller {
-  constructor ({userInteractor}) {
+  constructor ({loginUser}) {
     super()
-    this._userInteractor = userInteractor
+    this._loginUser = loginUser
   }
 
   async login (req, res, next) {
     let {email, password} = req.body
 
-    return this._userInteractor.login({email, password})
+    return this._loginUser.execute({email, password})
   }
 }
 

@@ -1,7 +1,7 @@
 const {Event} = require('../entities')
 const ObjectID = require('mongodb').ObjectID
 
-class EventDataMapper {
+class EventMongoStorage {
   constructor ({db}) {
     this._db = db
   }
@@ -12,13 +12,7 @@ class EventDataMapper {
     })
 
     if (data) {
-      return new Event({
-        data: {
-          id: data._id.toHexString(),
-          name: data.name,
-          date: data.date
-        }
-      })
+      return this._mapDataToEvent(data)
     }
 
     return null
@@ -41,7 +35,7 @@ class EventDataMapper {
     }
   }
 
-  async getEventsData ({offset, limit, from, to}) {
+  async getEvents ({offset, limit, from, to}) {
     let cursor = await this._db.collection('events')
       .find()
       .skip(offset)
@@ -64,7 +58,7 @@ class EventDataMapper {
       })
     }
 
-    return cursor.toArray()
+    return cursor.toArray().map(this._mapDataToEvent)
   }
 
   async removeEvent (event) {
@@ -72,6 +66,16 @@ class EventDataMapper {
       _id: event.id && ObjectID.createFromHexString(event.id)
     })
   }
+
+  _mapDataToEvent (data) {
+    return new Event({
+      data: {
+        id: data._id.toHexString(),
+        name: data.name,
+        date: data.date
+      }
+    })
+  }
 }
 
-module.exports = EventDataMapper
+module.exports = EventMongoStorage

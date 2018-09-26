@@ -1,6 +1,6 @@
 const {ValidationError, AccessError} = require('../errors')
 
-class UserInteractor {
+class UserAuthorizer {
   constructor ({userGateway, validator, encryptor}) {
     this._userGateway = userGateway
     this._validator = validator
@@ -29,4 +29,4 @@ class UserInteractor {
   }
 }
 
-module.exports = UserInteractor
+module.exports = UserAuthorizer
